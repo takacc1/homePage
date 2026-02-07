@@ -6,6 +6,26 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { loader.style.display = 'none'; }, 600);
     }, 800);
 
+    // Show loader when internal links are clicked so navigation shows spinner
+    document.querySelectorAll('a[href]').forEach(a => {
+        const href = a.getAttribute('href');
+        // ignore external links, anchors, mailto, tel, and targets that open new tab
+        if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#') || a.target === '_blank') return;
+
+        a.addEventListener('click', (e) => {
+            // allow downloaded files or hash navigation to proceed normally
+            e.preventDefault();
+            const loaderEl = document.getElementById('loader');
+            if (loaderEl) {
+                loaderEl.style.display = 'block';
+                // force visible
+                setTimeout(() => { loaderEl.style.opacity = '1'; }, 10);
+            }
+            // small delay to let spinner render, then navigate
+            setTimeout(() => { window.location.href = href; }, 120);
+        });
+    });
+
     // 2. Hero Slider
     const slides = document.querySelectorAll('.slide');
     let currentSlide = 0;
