@@ -588,7 +588,8 @@ footer {
 /* 記事本文エリア */
 .article-content {
     background: var(--layer-bg);
-    padding: 0 20px 100px;
+    /* 下部余白を調整してフッタ直前の空白を削除 */
+    padding: 0 20px 40px;
 
 }
 
@@ -600,10 +601,10 @@ footer {
 /* 文章のスタイル */
 .text-body {
     font-size: 1rem;
-    line-height: 2.2;
-    /* 行間を広めに */
+    line-height: 2.0;
+    /* 行間をやや広めに */
     color: #ccc;
-    margin-bottom: 60px;
+    margin-bottom: 20px;
 }
 
 .text-body p {
@@ -632,32 +633,41 @@ footer {
 .caption {
     display: block;
     text-align: center;
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     color: var(--text-muted);
-    margin-bottom: 50px;
+    margin: 8px 0 18px;
 }
 
 /* テーブルスタイル（Music用） */
 .styled-table {
     width: 100%;
     border-collapse: collapse;
-    margin: 40px 0;
+    margin: 24px 0;
     font-size: 0.95rem;
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    border: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .styled-table th,
 .styled-table td {
-    padding: 20px;
+    padding: 12px 14px;
     text-align: left;
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
 }
 
 .styled-table th {
-    background-color: rgba(255, 255, 255, 0.05);
+    background-color: rgba(255, 255, 255, 0.1);
     color: var(--accent);
     font-weight: 600;
-    width: 30%;
+    width: 35%;
+}
+
+@media (max-width: 768px) {
+
+    .styled-table th,
+    .styled-table td {
+        padding: 10px;
+        font-size: 0.9rem;
+    }
 }
 
 /* PCスペック表用 */
