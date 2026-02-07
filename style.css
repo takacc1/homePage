@@ -1,0 +1,370 @@
+* {
+    margin: 0;
+    /* 余白を消す */
+    padding: 0;
+    /* 内側の余白も消す */
+    box-sizing: border-box;
+    /* 幅や高さを計算するときにborderも含める */
+}
+
+body,
+html {
+    width: 100%;
+    height: 100%;
+    font-family: Arial, sans-serif;
+    /* 全体のフォント */
+    background-color: #121212;
+    /* 黒に近いダーク背景 */
+    color: #eee;
+    /* テキストは明るい灰色 */
+}
+
+/* ページタイトル */
+h1 {
+    text-align: center;
+    /* 中央揃え */
+    padding: 20px;
+    /* 上下に余白 */
+    color: #52dae4;
+    /* 水色っぽい色 */
+}
+
+/* ====== フルスクリーンスライダー部分 ====== */
+.slider {
+    width: 100vw;
+    /* 画面幅いっぱい */
+    height: 50vh;
+    /* 画面高さいっぱい */
+    overflow: hidden;
+    /* はみ出した部分は非表示 */
+    position: relative;
+    /* 矢印ボタンを配置するために必要 */
+}
+
+.slides {
+    display: flex;
+    /* 横に画像を並べる */
+    width: 100%;
+    height: 100%;
+    transition: transform 1s ease-in-out;
+    /* スライドするときの動き（1秒で滑らかに） */
+}
+
+.slides img {
+    width: 100vw;
+    /* 画面幅いっぱいの画像 */
+    height: 100%;
+    /* スライダーの高さに合わせる */
+    object-fit: cover;
+    /* 画像を引き伸ばさずにトリミングして調整 */
+    flex-shrink: 0;
+    /* 画像の幅を勝手に縮めない */
+}
+
+/* ====== 趣味カードのレイアウト ====== */
+.container {
+    max-width: 1000px;
+    /* 最大横幅 */
+    margin: 40px auto;
+    /* 上下40px、左右は中央寄せ */
+    padding: 0 20px;
+    /* 左右に余白 */
+    display: grid;
+    /* グリッドレイアウト */
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    /* 幅250px以上で自動調整 */
+    gap: 20px;
+    /* カードの間隔 */
+}
+
+.card {
+    background-color: #1f1f1f;
+    /* ダークグレー背景 */
+    border-radius: 15px;
+    /* 角を丸める */
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+    /* 影を付ける */
+    transition: transform 0.3s, box-shadow 0.3s;
+    /* ホバー時にアニメーション */
+}
+
+.card:hover {
+    transform: translateY(-10px);
+    /* 上に少し浮く */
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
+    /* 影を強める */
+    background-color: #12e4f3;
+
+    color: #121212;
+}
+
+/* ホバー時にカード内のテキストも黒にする */
+.card:hover .card-content h2,
+.card:hover .card-content p {
+    color: #121212;
+}
+
+.card img {
+    width: 100%;
+    /* カード幅いっぱいの画像 */
+    height: 180px;
+    /* 高さ固定 */
+    object-fit: cover;
+    /* 写真の比率を崩さずトリミング */
+    border-top-left-radius: 15px;
+    /* カードに合わせて角丸 */
+    border-top-right-radius: 15px;
+}
+
+
+.card-content {
+    padding: 15px;
+    /* テキスト周りの余白 */
+}
+
+.card-content h2 {
+    color: #52dae4;
+    /* 水色タイトル */
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.card-content p {
+    color: #ccc;
+    font-size: 0.95em;
+    line-height: 1.4;
+}
+
+/* フッター */
+footer {
+    text-align: center;
+    /* 中央揃え */
+    padding: 20px;
+    background-color: #1f1f1f;
+    /* ダーク背景 */
+    color: #777;
+    /* 薄いグレー文字 */
+    font-size: 0.9em;
+    margin-top: 40px;
+}
+
+/* 学校情報のスタイル */
+.school-info {
+    text-align: right;
+    color: #52dae4;
+    /* タイトルより薄め */
+    font-size: 0.9em;
+    /* 少し小さめ */
+    margin-top: -10px;
+    /* タイトルと同じフォント */
+    font-family: 'Montserrat', sans-serif;
+
+    padding: 10px;
+}
+
+/* リンクのスタイル */
+a {
+    text-decoration: none;
+    /* 下線を消す */
+    color: inherit;
+    /* 親要素の文字色を継承 */
+}
+
+
+
+
+.back-button a {
+    display: block;
+    /* ブロックにして全体をクリック可能に */
+    padding: 8px 16px;
+    background-color: #1f1f1f;
+    color: #12e4f3;
+    text-decoration: none;
+    border-radius: 10px;
+    font-family: 'Montserrat', Arial, sans-serif;
+    font-weight: bold;
+    border: 2px solid #1f1f1f;
+    transition: background-color 0.3s, transform 0.2s;
+    cursor: pointer;
+    position: fixed;
+    top: 20px;
+    /* 上から20pxの位置 */
+    left: 20px;
+    /* 左から20pxの位置 */
+    z-index: 1000;
+    /* 他の要素より前に出す */
+}
+
+/* ホバー効果 */
+.back-button a:hover {
+    background-color: #12e4f3;
+    color: #121212;
+    transform: translateY(-2px);
+}
+
+
+
+
+/* コンテンツ全体のスタイル */
+.content {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 0 20px;
+    color: #eee;
+    font-family: 'Arial', sans-serif;
+    /* About Me ページと同じ */
+    line-height: 1.6;
+    font-size: 1em;
+}
+
+/* テーブルのスタイル */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    /* 線を重ねず1本にする */
+    margin-top: 20px;
+}
+
+/* テーブルのヘッダーとセルのスタイル */
+th,
+td {
+    border: 1px solid #ccc;
+    padding: 8px;
+    text-align: center;
+}
+
+/* ヘッダーの背景色と文字色 */
+th {
+    background-color: #1f1f1f;
+    color: #12e4f3;
+}
+
+/* セルの背景色と文字色 */
+td {
+    background-color: #2a2a2a;
+    color: #eee;
+}
+
+/* 「中国大会の写真」だけ中央揃えにする */
+.center-text {
+    text-align: center;
+    font-size: 1em;
+    margin-top: 8px;
+    margin-bottom: 16px;
+}
+
+
+/* ====== 追加のテーブルスタイル ====== */
+.pc-table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+}
+
+/* 共通テーブルスタイル */
+.pc-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 720px;
+}
+
+/* テーブルキャプションのスタイル */
+.pc-table caption {
+    caption-side: top;
+    text-align: left;
+    margin-bottom: 10px;
+    font-weight: bold;
+    color: #12e4f3;
+}
+
+/* テーブルのヘッダー、セルのスタイル */
+.pc-table th,
+.pc-table td {
+    border: 1px solid #444;
+    padding: 10px;
+    vertical-align: top;
+}
+
+/* ヘッダーの背景色と文字色 */
+.pc-table thead th {
+    background: #1f1f1f;
+    color: #12e4f3;
+}
+
+/* セルの背景色と文字色 */
+.pc-table tbody td {
+    background: #2a2a2a;
+    color: #eee;
+}
+
+/* フッター行のスタイル */
+.pc-table tfoot td {
+    background: #1b1b1b;
+    font-weight: bold;
+}
+
+/* 価格列を右寄せにする */
+.price {
+    white-space: nowrap;
+    text-align: right;
+}
+
+/* メモ用のスタイル */
+.note {
+    color: #bbb;
+    font-size: 0.95em;
+}
+
+p {
+    line-height: 2;
+    /* 2行分の高さを確保 */
+}
+
+/* 公式サイトリンクのスタイル */
+.official-link {
+    color: #00ccff;
+    /* 好きな色に変更可能 */
+    text-decoration: none;
+    /* 下線を消す場合 */
+}
+
+/* ホバー時のスタイル */
+.official-link:hover {
+    color: #00ccff;
+    /* ホバー時の色 */
+    text-decoration: underline;
+    /* ホバーで下線を付ける場合 */
+}
+
+
+
+
+.masonry {
+    column-count: 4;
+    /* 列数（スマホなら2〜3にすると◎） */
+    column-gap: 10px;
+}
+
+.masonry img {
+    width: 100%;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    display: block;
+}
+
+.nav-button {
+    font-family: Arial, sans-serif;
+    display: inline-block;
+    padding: 10px 20px;
+    margin: 5px;
+    background-color: #55b4f9;
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+
+}
+
+.nav-button:hover {
+    background-color: white;
+    color: #55b4f9;
+}

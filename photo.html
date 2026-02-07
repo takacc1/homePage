@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>写真 - About Me</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        /* Flexboxギャラリー */
+        .gallery {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .gallery img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+
+        .gallery img:hover {
+            transform: scale(1.05);
+        }
+
+        @media (max-width: 800px) {
+            .gallery img {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
+        @media (max-width: 500px) {
+            .gallery img {
+                width: 120px;
+                height: 120px;
+            }
+        }
+
+        /* モーダル用 */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal img {
+            max-width: 90%;
+            max-height: 90%;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>写真</h1>
+    <div class="back-button">
+        <a href="index.html">戻る</a>
+    </div>
+
+    <div class="content">
+        <p>
+            僕は写真を撮るのが好きで、旅行などで県外とかに行った際は必ず写真を撮っています。<br><br>
+            スマホで頑張って撮ってます。<br><br>
+            このホームページの写真は全て自分で撮ったものです。<br><br><br><br>
+            一眼レフが欲しいですね。<br><br>
+            写真をタップすると拡大します。<br><br>
+
+        </p>
+    </div>
+
+    <div class="gallery" id="gallery">
+        <!-- JSでランダム表示 -->
+    </div>
+
+    <!-- モーダル -->
+    <div id="modal" class="modal">
+        <img id="modal-img" src="" alt="拡大画像">
+    </div>
+
+    <script>
+        const totalPhotos = 60; // 写真の枚数
+        const gallery = document.getElementById('gallery');
+        const modal = document.getElementById('modal');
+        const modalImg = document.getElementById('modal-img');
+
+        // サムネと元画像の配列
+        const photos = [];
+        for (let i = 1; i <= totalPhotos; i++) {
+            photos.push({
+                thumb: `samune/${i}.jpg`,
+                full: `photo/${i}.jpg`
+            });
+        }
+
+        // 配列をシャッフル
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        const shuffled = shuffle(photos);
+
+        // ギャラリーに表示
+        shuffled.forEach((p, index) => {
+            const img = document.createElement('img');
+            img.src = p.thumb;
+            img.alt = `写真${index + 1}`;
+            img.loading = "lazy";
+
+            // クリックでモーダル表示
+            img.addEventListener('click', () => {
+                modalImg.src = p.full;
+                modal.style.display = 'flex';
+            });
+
+            gallery.appendChild(img);
+        });
+
+        // モーダルクリックで閉じる
+        modal.addEventListener('click', () => {
+            modal.style.display = 'none';
+        });
+    </script>
+
+    <footer style="text-align:center;margin-top:30px;">
+        © 2025 All rights reserved.
+    </footer>
+</body>
+
+</html>
