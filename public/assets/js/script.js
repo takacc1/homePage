@@ -13,16 +13,20 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#') || a.target === '_blank') return;
 
         a.addEventListener('click', (e) => {
-            // allow downloaded files or hash navigation to proceed normally
+            // prevent default navigation to show loader first
             e.preventDefault();
             const loaderEl = document.getElementById('loader');
             if (loaderEl) {
-                loaderEl.style.display = 'block';
-                // force visible
-                setTimeout(() => { loaderEl.style.opacity = '1'; }, 10);
+                // ensure starting from invisible state to avoid top-left flash
+                loaderEl.style.opacity = '0';
+                loaderEl.style.display = 'flex';
+                // next frame, fade in
+                requestAnimationFrame(() => {
+                    loaderEl.style.opacity = '1';
+                });
             }
             // small delay to let spinner render, then navigate
-            setTimeout(() => { window.location.href = href; }, 120);
+            setTimeout(() => { window.location.href = href; }, 140);
         });
     });
 
