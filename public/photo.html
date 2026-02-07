@@ -7,17 +7,20 @@
     <title>写真 - About Me</title>
     <link rel="stylesheet" href="assets/css/style.css">
     <style>
-        /* Flexboxギャラリー */
+        /* Gridギャラリー：スマホで最低3列表示にする */
         .gallery {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
+            display: grid;
+            /* デスクトップでは自動フィット。最低幅を120pxにして余白で調整 */
+            grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
             gap: 10px;
+            justify-items: center;
+            align-items: start;
         }
 
         .gallery img {
-            width: 200px;
-            height: 200px;
+            width: 100%;
+            /* 正方形に近い表示 */
+            aspect-ratio: 1 / 1;
             object-fit: cover;
             border-radius: 8px;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
@@ -29,17 +32,16 @@
             transform: scale(1.05);
         }
 
+        /* スマホ表示: 最低3列を保証（幅に応じて小さくなる） */
         @media (max-width: 800px) {
-            .gallery img {
-                width: 150px;
-                height: 150px;
+            .gallery {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 
         @media (max-width: 500px) {
-            .gallery img {
-                width: 120px;
-                height: 120px;
+            .gallery {
+                grid-template-columns: repeat(3, 1fr);
             }
         }
 

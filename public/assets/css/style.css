@@ -651,7 +651,8 @@ footer {
 .styled-table td {
     padding: 12px 14px;
     text-align: left;
-    border-bottom: 2px solid rgba(255, 255, 255, 0.1);
+    /* Add full cell borders so vertical lines appear */
+    border: 1px solid rgba(255, 255, 255, 0.08);
 }
 
 .styled-table th {
