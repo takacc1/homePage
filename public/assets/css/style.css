@@ -1,0 +1,694 @@
+:root {
+    /* --accent: #52dae4;  ←元の水色をコメントアウトまたは削除 */
+    --accent: #e0e0e0;
+    /* 【変更】白に近いグレー（または #ffffff）に変更 */
+
+    --bg: #050505;
+    /* 黒（そのまま） */
+    --layer-bg: #0a0a0a;
+    /* 黒（そのまま） */
+    --card-bg: #111;
+    /* ダークグレー（そのまま） */
+    --text: #fff;
+    /* 白（そのまま） */
+    --text-muted: #888;
+    /* グレー（そのまま） */
+    --font-head: 'Montserrat', sans-serif;
+    --font-body: 'Noto Sans JP', sans-serif;
+    --easing: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--font-body);
+    overflow-x: hidden;
+
+    /* 【追加】背景色をコンテンツと同じにして、万が一バウンドしても裏が見えないようにする */
+    background-color: var(--layer-bg);
+    /* 【追加】スマホなどで「これ以上下に引っ張れない」ようにする */
+    overscroll-behavior-y: none;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    /* 画面の高さ最低100%を確保 */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Loader */
+#loader {
+    position: fixed;
+    inset: 0;
+    background: #000;
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    transition: opacity 0.6s ease;
+}
+
+.spinner {
+    width: 40px;
+    height: 40px;
+    border: 2px solid #333;
+    border-top-color: var(--accent);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Nav */
+#navbar {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    padding: 20px 40px;
+    z-index: 100;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    mix-blend-mode: difference;
+}
+
+.logo {
+    font-family: var(--font-head);
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+/* Hero (Fixed) */
+.hero-fixed {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    height: 100dvh;
+    z-index: 1;
+    overflow: hidden;
+}
+
+.slides,
+.slide {
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1.5s ease;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.6));
+}
+
+.hero-content {
+    position: absolute;
+    bottom: 15%;
+    left: 5%;
+    z-index: 10;
+}
+
+.hero-title {
+    font-family: var(--font-head);
+    font-size: 7vw;
+    line-height: 0.9;
+    font-weight: 800;
+    text-transform: uppercase;
+    overflow: hidden;
+    display: flex;
+}
+
+.char {
+    display: inline-block;
+    transform: translateY(100%);
+    animation: slideUp 1s var(--easing) forwards;
+}
+
+.hero-title .char:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.hero-title .char:nth-child(2) {
+    animation-delay: 0.15s;
+}
+
+.hero-title .char:nth-child(3) {
+    animation-delay: 0.2s;
+}
+
+.hero-title .char:nth-child(4) {
+    animation-delay: 0.25s;
+}
+
+.hero-title .char:nth-child(5) {
+    animation-delay: 0.3s;
+}
+
+.hero-title .char:nth-child(6) {
+    animation-delay: 0.35s;
+}
+
+.hero-title .char:nth-child(7) {
+    animation-delay: 0.4s;
+}
+
+.hero-title .char:nth-child(8) {
+    animation-delay: 0.45s;
+}
+
+.hero-subtitle {
+    margin-top: 20px;
+    font-size: 1.1rem;
+    color: rgba(255, 255, 255, 0.8);
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 0.8s;
+}
+
+.scroll-indicator {
+    position: absolute;
+    bottom: 40px;
+    right: 40px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0;
+    animation: fadeIn 1s ease forwards 1.2s;
+}
+
+.scroll-indicator span {
+    font-size: 0.8rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+}
+
+.scroll-indicator .line {
+    width: 40px;
+    height: 1px;
+    background: #fff;
+}
+
+/* Content Layer */
+.content-layer {
+    position: relative;
+    z-index: 5;
+    margin-top: 100vh;
+    margin-top: 100dvh;
+    background: var(--layer-bg);
+    border-radius: 40px 40px 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.5);
+
+    /* 【修正1】ここの下部余白を削除（Footer側で制御） */
+    padding-bottom: 0;
+    padding-top: 80px;
+}
+
+
+
+/* Intro */
+.intro {
+    padding: 150px 20px;
+    display: flex;
+    justify-content: center;
+}
+
+.text-center {
+    text-align: center;
+    max-width: 800px;
+}
+
+.school-info {
+    color: var(--accent);
+    font-family: var(--font-head);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    display: block;
+}
+
+.description {
+    font-size: 2.3rem;
+    line-height: 1.8;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+/* Interests Grid */
+.interests {
+    padding: 0 40px 100px;
+}
+
+.section-title {
+    font-family: var(--font-head);
+    font-size: 4rem;
+    margin-bottom: 60px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.grid-wrapper {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+}
+
+.card.large {
+    grid-row: span 2;
+}
+
+.card.wide {
+    grid-column: span 2;
+}
+
+/* ====== Spotlight Card Design ====== */
+.spotlight-card {
+    position: relative;
+    background: var(--card-bg);
+    border-radius: 20px;
+    overflow: hidden;
+    height: 350px;
+    display: block;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    transition: transform 0.4s var(--easing);
+}
+
+.card.large {
+    height: 720px;
+}
+
+.spotlight-card::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    background: radial-gradient(600px circle at var(--x) var(--y),
+            rgba(255, 255, 255, 0.1),
+            transparent 40%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    pointer-events: none;
+}
+
+.spotlight-card:hover::after {
+    opacity: 1;
+}
+
+.spotlight-card:hover {
+    transform: scale(0.98);
+}
+
+.card-bg-wrap {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    overflow: hidden;
+}
+
+/* =========================================
+   style.css の修正箇所
+========================================= */
+
+.card-bg {
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+
+    /* ▼▼▼ ここを修正 ▼▼▼ */
+    /* transform（変形）にかかる時間を 0.6s から 1.5s に変更 */
+    /* 数字を大きくするほど、よりゆっくりになります（例: 2.0s, 3.0s...） */
+    transition: transform 2s var(--easing), filter 0.4s ease;
+    /* ▲▲▲ ここまで ▲▲▲ */
+
+    transform: scale(1);
+    filter: none;
+}
+
+/* ↓ホバー時の設定はそのままで大丈夫です */
+.spotlight-card:hover .card-bg {
+    filter: brightness(1.1);
+    transform: scale(1.05);
+}
+
+.card-content {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 30px;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
+}
+
+.card h3 {
+    font-family: var(--font-head);
+    font-size: 1.8rem;
+    transform: translateY(10px);
+    transition: transform 0.4s ease;
+}
+
+.card p {
+    color: var(--text-muted);
+    font-size: 0.9rem;
+    margin-top: 5px;
+    opacity: 0;
+    transform: translateY(10px);
+    transition: all 0.4s ease 0.1s;
+}
+
+.icon-arrow {
+    position: absolute;
+    right: 30px;
+    bottom: 30px;
+    font-size: 1.5rem;
+    color: var(--accent);
+    opacity: 0;
+    transform: translateX(-20px);
+    transition: all 0.4s var(--easing);
+}
+
+@media (hover: hover) {
+    .spotlight-card:hover h3 {
+        transform: translateY(0);
+    }
+
+    .spotlight-card:hover p {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .spotlight-card:hover .icon-arrow {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+/* Animation Classes */
+.reveal-text {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: opacity 1s ease, transform 1s var(--easing);
+}
+
+.reveal-text.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+@keyframes slideUp {
+    to {
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+    }
+}
+
+footer {
+    /* 【修正1】余白調整：上50px、下30pxで底辺とのバランスを調整 */
+    padding: 50px 20px 30px;
+    text-align: center;
+    color: #444;
+    font-size: 0.8rem;
+    margin-top: auto;
+    width: 100%;
+}
+
+/* Mobile Responsive */
+@media (max-width: 768px) {
+    #navbar {
+        padding: 15px 20px;
+    }
+
+    .hero-title {
+        font-size: 12vw;
+    }
+
+    .intro {
+        padding: 80px 20px;
+    }
+
+    .section-title {
+        font-size: 2.5rem;
+        margin-bottom: 40px;
+    }
+
+    .interests {
+        padding: 0 20px 80px;
+    }
+
+    .grid-wrapper {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .card.large,
+    .card.wide {
+        grid-column: span 1;
+        grid-row: span 1;
+        height: 280px;
+    }
+
+    .spotlight-card {
+        height: 280px;
+    }
+
+    .card h3 {
+        transform: translateY(0);
+        font-size: 1.5rem;
+    }
+
+    .card p {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .icon-arrow {
+        opacity: 1;
+        transform: translateX(0);
+        bottom: 25px;
+        right: 25px;
+    }
+
+    .card-content {
+        padding: 20px;
+        background: linear-gradient(to top, rgba(0, 0, 0, 0.9) 20%, transparent);
+    }
+}
+
+/* =========================================
+   Sub Page (Hobby Pages) Styles
+   ========================================= */
+
+/* ページヘッダー（タイトル部分） */
+.page-header {
+    height: 40vh;
+    /* 画面の40%の高さ */
+    min-height: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    background-color: var(--bg);
+    overflow: hidden;
+}
+
+/* ヘッダー背景画像（各HTMLでstyle指定する用） */
+.header-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.4;
+    /* 画像を少し暗くする */
+    filter: grayscale(100%);
+    /* 白黒にする */
+    transition: transform 10s ease;
+}
+
+/* ヘッダーのフェード処理 */
+.page-header::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to bottom, transparent, var(--layer-bg));
+}
+
+.page-title {
+    position: relative;
+    z-index: 10;
+    font-family: var(--font-head);
+    font-size: 3.5rem;
+    font-weight: 800;
+    letter-spacing: 4px;
+    text-transform: uppercase;
+    text-shadow: 0 10px 30px rgba(0, 0, 0, 0.8);
+}
+
+/* 戻るボタン（左上固定） */
+.nav-back {
+    position: fixed;
+    top: 30px;
+    left: 40px;
+    z-index: 100;
+}
+
+.nav-back a {
+    font-family: var(--font-head);
+    font-weight: 600;
+    font-size: 0.9rem;
+    letter-spacing: 1px;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    opacity: 0.7;
+    transition: opacity 0.3s;
+    background: rgba(0, 0, 0, 0.5);
+    /* 視認性確保 */
+    padding: 10px 20px;
+    border-radius: 30px;
+    backdrop-filter: blur(5px);
+}
+
+.nav-back a:hover {
+    opacity: 1;
+}
+
+/* 記事本文エリア */
+.article-content {
+    background: var(--layer-bg);
+    padding: 0 20px 100px;
+
+}
+
+.container-sm {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* 文章のスタイル */
+.text-body {
+    font-size: 1rem;
+    line-height: 2.2;
+    /* 行間を広めに */
+    color: #ccc;
+    margin-bottom: 60px;
+}
+
+.text-body p {
+    margin-bottom: 2em;
+    /* 段落ごとの余白 */
+}
+
+/* 画像のスタイル */
+.img-fluid {
+    width: 100%;
+    height: auto;
+    border-radius: 4px;
+    margin: 40px 0 10px;
+    box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+    filter: grayscale(30%);
+    /* 少し彩度を落とす */
+    transition: filter 0.3s ease, transform 0.3s ease;
+}
+
+.img-fluid:hover {
+    filter: grayscale(0%);
+    /* ホバーでカラーに */
+    transform: scale(1.01);
+}
+
+.caption {
+    display: block;
+    text-align: center;
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    margin-bottom: 50px;
+}
+
+/* テーブルスタイル（Music用） */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 40px 0;
+    font-size: 0.95rem;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 20px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.styled-table th {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--accent);
+    font-weight: 600;
+    width: 30%;
+}
+
+/* PCスペック表用 */
+.pc-table-wrap {
+    overflow-x: auto;
+}
+
+.price {
+    text-align: right;
+    font-family: monospace;
+}
+
+.note {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+    text-align: right;
+}
+
+/* スマホ対応 */
+@media (max-width: 768px) {
+    .page-title {
+        font-size: 2rem;
+    }
+
+    .nav-back {
+        top: 20px;
+        left: 20px;
+    }
+
+    .text-body {
+        font-size: 0.95rem;
+        text-align: justify;
+    }
+}

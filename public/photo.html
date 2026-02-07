@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>写真 - About Me</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="assets/css/style.css">
     <style>
         /* Flexboxギャラリー */
         .gallery {
@@ -66,23 +66,32 @@
 </head>
 
 <body>
-    <h1>写真</h1>
-    <div class="back-button">
-        <a href="index.html">戻る</a>
+
+    <div class="nav-back">
+        <a href="../index.html">← Back to Top</a>
     </div>
 
-    <div class="content">
-        <p>
-            僕は写真を撮るのが好きで、旅行などで県外とかに行った際は必ず写真を撮っています。<br><br>
-            スマホで頑張って撮ってます。<br><br>
-            このホームページの写真は全て自分で撮ったものです。<br><br><br><br>
-            一眼レフが欲しいですね。<br><br>
-            写真をタップすると拡大します。<br><br>
+    <header class="page-header">
+        <div class="header-bg" style="background-image: url('assets/images/photo/1.jpg');"></div>
+        <h1 class="page-title">写真</h1>
+    </header>
 
-        </p>
-    </div>
+    <main class="article-content">
+        <div class="container-sm">
+            <div class="text-body">
+                <p>
+                    僕は写真を撮るのが好きで、旅行などで県外とかに行った際は必ず写真を撮っています。<br><br>
+                    スマホで頑張って撮ってます。<br><br>
+                    このホームページの写真は全て自分で撮ったものです。<br><br><br><br>
+                    一眼レフが欲しいですね。<br><br>
+                    写真をタップすると拡大します。<br><br>
 
-    <div class="gallery" id="gallery">
+                </p>
+            </div>
+        </div>
+    </main>
+
+    <div class="gallery" id="gallery" style="margin: 40px auto; max-width: 1200px; padding: 0 20px;">
         <!-- JSでランダム表示 -->
     </div>
 
@@ -101,8 +110,8 @@
         const photos = [];
         for (let i = 1; i <= totalPhotos; i++) {
             photos.push({
-                thumb: `samune/${i}.jpg`,
-                full: `photo/${i}.jpg`
+                thumb: `assets/images/samune/${i}.jpg`,
+                full: `assets/images/photo/${i}.jpg`
             });
         }
 
@@ -139,8 +148,8 @@
         });
     </script>
 
-    <footer style="text-align:center;margin-top:30px;">
-        © 2025 All rights reserved.
+    <footer>
+        <p>© 2025 All rights reserved.</p>
     </footer>
 </body>
 
