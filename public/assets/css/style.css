@@ -157,31 +157,31 @@ a {
 }
 
 .hero-title .char:nth-child(2) {
-    animation-delay: 0.15s;
-}
-
-.hero-title .char:nth-child(3) {
     animation-delay: 0.2s;
 }
 
-.hero-title .char:nth-child(4) {
-    animation-delay: 0.25s;
-}
-
-.hero-title .char:nth-child(5) {
+.hero-title .char:nth-child(3) {
     animation-delay: 0.3s;
 }
 
-.hero-title .char:nth-child(6) {
-    animation-delay: 0.35s;
-}
-
-.hero-title .char:nth-child(7) {
+.hero-title .char:nth-child(4) {
     animation-delay: 0.4s;
 }
 
+.hero-title .char:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.hero-title .char:nth-child(6) {
+    animation-delay: 0.6s;
+}
+
+.hero-title .char:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
 .hero-title .char:nth-child(8) {
-    animation-delay: 0.45s;
+    animation-delay: 0.8s;
 }
 
 .hero-subtitle {
@@ -189,7 +189,7 @@ a {
     font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.8);
     opacity: 0;
-    animation: fadeIn 1s ease forwards 0.8s;
+    animation: fadeIn 1s ease forwards 1.2s;
 }
 
 .scroll-indicator {
@@ -200,7 +200,7 @@ a {
     align-items: center;
     gap: 10px;
     opacity: 0;
-    animation: fadeIn 1s ease forwards 1.2s;
+    animation: fadeIn 1s ease forwards 2s;
 }
 
 .scroll-indicator span {
