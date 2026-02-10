@@ -80,6 +80,11 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => {
                 loaderEl.style.opacity = '1';
             });
+            // ページロード完了後にローダーを隠す
+            setTimeout(() => {
+                loaderEl.style.opacity = '0';
+                setTimeout(() => { loaderEl.style.display = 'none'; }, 600);
+            }, 800);
         }
     });
 
