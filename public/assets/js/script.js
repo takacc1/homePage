@@ -69,4 +69,39 @@ document.addEventListener('DOMContentLoaded', () => {
         el.classList.add('reveal-text');
         observer.observe(el);
     });
+
+    // 4. Back Navigation Support
+    // ブラウザの戻るボタンに対応
+    window.addEventListener('popstate', () => {
+        const loaderEl = document.getElementById('loader');
+        if (loaderEl) {
+            loaderEl.style.opacity = '0';
+            loaderEl.style.display = 'flex';
+            requestAnimationFrame(() => {
+                loaderEl.style.opacity = '1';
+            });
+        }
+    });
+
+    // iPhoneのスワイプジェスチャーに対応
+    let touchStartX = 0;
+    let touchStartY = 0;
+
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.touches[0].clientX;
+        touchStartY = e.touches[0].clientY;
+    }, false);
+
+    document.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].clientX;
+        const touchEndY = e.changedTouches[0].clientY;
+
+        const diffX = touchEndX - touchStartX;
+        const diffY = Math.abs(touchEndY - touchStartY);
+
+        // 右にスワイプ（X軸の移動が大きく、Y軸の移動が小さい）
+        if (diffX > 50 && diffY < 50) {
+            history.back();
+        }
+    }, false);
 });
