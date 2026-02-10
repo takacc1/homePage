@@ -80,11 +80,15 @@ document.addEventListener('DOMContentLoaded', () => {
             requestAnimationFrame(() => {
                 loaderEl.style.opacity = '1';
             });
-            // ページロード完了後にローダーを隠す
-            setTimeout(() => {
-                loaderEl.style.opacity = '0';
-                setTimeout(() => { loaderEl.style.display = 'none'; }, 600);
-            }, 800);
+        }
+    });
+
+    // ページロード完了時にローダーを隠す
+    window.addEventListener('pageshow', () => {
+        const loaderEl = document.getElementById('loader');
+        if (loaderEl) {
+            loaderEl.style.opacity = '0';
+            setTimeout(() => { loaderEl.style.display = 'none'; }, 600);
         }
     });
 
