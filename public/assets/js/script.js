@@ -6,6 +6,19 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => { loader.style.display = 'none'; }, 600);
     }, 800);
 
+    // ローダー完全非表示後にhero-titleのアニメーションをスタート
+    setTimeout(() => {
+        const heroChars = document.querySelectorAll('.hero-title .char');
+        heroChars.forEach(char => {
+            char.classList.add('animate-char');
+        });
+        // subtitle と scroll-indicator も同時にアニメーション開始
+        const heroSubtitle = document.querySelector('.hero-subtitle');
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        if (heroSubtitle) heroSubtitle.classList.add('animate-subtitle');
+        if (scrollIndicator) scrollIndicator.classList.add('animate-scroll');
+    }, 1500);
+
     // Show loader when internal links are clicked so navigation shows spinner
     document.querySelectorAll('a[href]').forEach(a => {
         const href = a.getAttribute('href');

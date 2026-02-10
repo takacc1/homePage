@@ -149,39 +149,42 @@ a {
 .char {
     display: inline-block;
     transform: translateY(100%);
+}
+
+.char.animate-char {
     animation: slideUp 1s var(--easing) forwards;
 }
 
-.hero-title .char:nth-child(1) {
+.hero-title .char.animate-char:nth-child(1) {
+    animation-delay: 0.1s;
+}
+
+.hero-title .char.animate-char:nth-child(2) {
     animation-delay: 0.2s;
 }
 
-.hero-title .char:nth-child(2) {
+.hero-title .char.animate-char:nth-child(3) {
+    animation-delay: 0.3s;
+}
+
+.hero-title .char.animate-char:nth-child(4) {
     animation-delay: 0.4s;
 }
 
-.hero-title .char:nth-child(3) {
+.hero-title .char.animate-char:nth-child(5) {
+    animation-delay: 0.5s;
+}
+
+.hero-title .char.animate-char:nth-child(6) {
     animation-delay: 0.6s;
 }
 
-.hero-title .char:nth-child(4) {
+.hero-title .char.animate-char:nth-child(7) {
+    animation-delay: 0.7s;
+}
+
+.hero-title .char.animate-char:nth-child(8) {
     animation-delay: 0.8s;
-}
-
-.hero-title .char:nth-child(5) {
-    animation-delay: 1s;
-}
-
-.hero-title .char:nth-child(6) {
-    animation-delay: 1.2s;
-}
-
-.hero-title .char:nth-child(7) {
-    animation-delay: 1.4s;
-}
-
-.hero-title .char:nth-child(8) {
-    animation-delay: 1.6s;
 }
 
 .hero-subtitle {
@@ -189,7 +192,7 @@ a {
     font-size: 1.1rem;
     color: rgba(255, 255, 255, 0.8);
     opacity: 0;
-    animation: fadeIn 1s ease forwards 1.2s;
+    animation: fadeIn 3s ease forwards 3s;
 }
 
 .scroll-indicator {
@@ -200,7 +203,7 @@ a {
     align-items: center;
     gap: 10px;
     opacity: 0;
-    animation: fadeIn 1s ease forwards 2s;
+    animation: fadeIn 3.5s ease forwards 3.5s;
 }
 
 .scroll-indicator span {
@@ -423,7 +426,13 @@ a {
 }
 
 @keyframes slideUp {
+    from {
+        opacity: 0;
+        transform: translateY(100%);
+    }
+
     to {
+        opacity: 1;
         transform: translateY(0);
     }
 }
