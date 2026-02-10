@@ -349,12 +349,12 @@ a {
     /* ▲▲▲ ここまで ▲▲▲ */
 
     transform: scale(1);
-    filter: none;
+    filter: brightness(0.85);
 }
 
 /* ↓ホバー時の設定はそのままで大丈夫です */
 .spotlight-card:hover .card-bg {
-    filter: brightness(1.1);
+    filter: brightness(0.95);
     transform: scale(1.05);
 }
 
