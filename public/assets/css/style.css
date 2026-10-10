@@ -406,9 +406,14 @@ a {
     overflow-wrap: anywhere;
 }
 
+.education-school,
+.content-layer .activity-link,
+.content-layer .records-more {
+    color: #c9c9c9;
+}
+
 .education-school {
     display: block;
-    color: #c9c9c9;
     font-size: 1.125rem;
     font-weight: 500;
     line-height: 1.7;
