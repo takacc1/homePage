@@ -345,7 +345,7 @@ a {
 
 /* Profile and activities */
 .portfolio-section {
-    padding: 0 40px 100px;
+    padding: 0 40px 140px;
 }
 
 .portfolio-section,
@@ -507,7 +507,7 @@ a {
 
 @media (max-width: 768px) {
     .portfolio-section {
-        padding: 0 20px 72px;
+        padding: 0 20px 104px;
     }
 
     .portfolio-section .section-title {
