@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hero && !isHistoryNavigation && !window.location.hash) {
         root.classList.add('hero-intro-pending');
         window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-        introTimeout = setTimeout(unlockIntro, 5000);
+        introTimeout = setTimeout(unlockIntro, 4000);
         window.addEventListener('pagehide', unlockIntro, { once: true });
     }
 
