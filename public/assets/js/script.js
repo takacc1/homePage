@@ -1,4 +1,73 @@
 document.addEventListener('DOMContentLoaded', () => {
+    const hero = document.querySelector('.hero-fixed');
+    const root = document.documentElement;
+    const navigation = performance.getEntriesByType('navigation')[0];
+    const isHistoryNavigation = navigation && navigation.type === 'back_forward';
+    let introTimeout;
+    const unlockIntro = () => {
+        root.classList.remove('hero-intro-pending');
+        clearTimeout(introTimeout);
+    };
+
+    if (hero && !isHistoryNavigation && !window.location.hash) {
+        root.classList.add('hero-intro-pending');
+        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        introTimeout = setTimeout(unlockIntro, 6000);
+        window.addEventListener('pagehide', unlockIntro, { once: true });
+    }
+
+    const hideLoader = () => {
+        const loaderEl = document.getElementById('loader');
+        if (loaderEl) {
+            loaderEl.style.opacity = '0';
+            loaderEl.style.display = 'none';
+        }
+    };
+    if (isHistoryNavigation) {
+        unlockIntro();
+        hideLoader();
+    }
+
+    const sectionNav = document.querySelector('.site-nav');
+    if (sectionNav) {
+        const navbar = document.getElementById('navbar');
+        const links = [...sectionNav.querySelectorAll('a[href^="#"]')];
+        const sections = links.map(link => document.getElementById(link.getAttribute('href').slice(1)));
+        let navigationFrame = null;
+        const updateNavigation = () => {
+            navigationFrame = null;
+            let activeIndex = -1;
+            sections.forEach((section, index) => {
+                if (section && section.getBoundingClientRect().top <= window.innerHeight * 0.35) {
+                    activeIndex = index;
+                }
+            });
+            links.forEach((link, index) => {
+                if (index === activeIndex) link.setAttribute('aria-current', 'location');
+                else link.removeAttribute('aria-current');
+            });
+            navbar.classList.toggle('is-scrolled', window.scrollY > 40);
+        };
+        const scheduleNavigation = () => {
+            if (navigationFrame === null) navigationFrame = requestAnimationFrame(updateNavigation);
+        };
+        links.forEach((link, index) => {
+            link.addEventListener('click', event => {
+                if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || !sections[index]) return;
+                event.preventDefault();
+                history.replaceState(history.state, '', link.getAttribute('href'));
+                sections[index].scrollIntoView({
+                    behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'instant' : 'smooth',
+                    block: 'start'
+                });
+            });
+        });
+        window.addEventListener('scroll', scheduleNavigation, { passive: true });
+        window.addEventListener('resize', scheduleNavigation);
+        window.addEventListener('pageshow', scheduleNavigation);
+        updateNavigation();
+    }
+
     // 1. Loader
     const loader = document.getElementById('loader');
     setTimeout(() => {
@@ -26,6 +95,12 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!href || href.startsWith('http') || href.startsWith('mailto:') || href.startsWith('tel:') || href.startsWith('#') || a.target === '_blank') return;
 
         a.addEventListener('click', (e) => {
+            if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+            if (a.hasAttribute('data-history-back') && history.length > 1) {
+                e.preventDefault();
+                history.back();
+                return;
+            }
             // prevent default navigation to show loader first
             e.preventDefault();
             const loaderEl = document.getElementById('loader');
@@ -46,13 +121,17 @@ document.addEventListener('DOMContentLoaded', () => {
     // 2. Hero Slider
     const slides = document.querySelectorAll('.slide');
     let currentSlide = 0;
-    slides[0].classList.add('active');
+    if (slides.length > 0) {
+        slides[0].classList.add('active');
+    }
 
-    setInterval(() => {
-        slides[currentSlide].classList.remove('active');
-        currentSlide = (currentSlide + 1) % slides.length;
-        slides[currentSlide].classList.add('active');
-    }, 4000);
+    if (slides.length > 1) {
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 4000);
+    }
 
     // 3. Spotlight Effect (Mouse Tracking)
     const cards = document.querySelectorAll('.spotlight-card');
@@ -86,18 +165,19 @@ document.addEventListener('DOMContentLoaded', () => {
     // 4. Back Navigation Support
     // ブラウザの戻るボタンに対応
     window.addEventListener('popstate', () => {
-        const loaderEl = document.getElementById('loader');
-        if (loaderEl) {
-            loaderEl.style.opacity = '0';
-            loaderEl.style.display = 'flex';
-            requestAnimationFrame(() => {
-                loaderEl.style.opacity = '1';
-            });
-        }
+        unlockIntro();
+        hideLoader();
     });
 
     // ページロード完了時にローダーを隠す
-    window.addEventListener('pageshow', () => {
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted || isHistoryNavigation) {
+            unlockIntro();
+            hideLoader();
+            return;
+        } else if (root.classList.contains('hero-intro-pending')) {
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        }
         const loaderEl = document.getElementById('loader');
         if (loaderEl) {
             loaderEl.style.opacity = '0';
@@ -106,24 +186,38 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // iPhoneのスワイプジェスチャーに対応
-    let touchStartX = 0;
-    let touchStartY = 0;
+    let touchStartX = null;
+    let touchStartY = null;
 
     document.addEventListener('touchstart', (e) => {
+        if (e.touches.length !== 1) {
+            touchStartX = null;
+            touchStartY = null;
+            return;
+        }
         touchStartX = e.touches[0].clientX;
         touchStartY = e.touches[0].clientY;
     }, false);
 
     document.addEventListener('touchend', (e) => {
+        if (touchStartX === null || touchStartY === null || !e.changedTouches.length) return;
         const touchEndX = e.changedTouches[0].clientX;
         const touchEndY = e.changedTouches[0].clientY;
 
         const diffX = touchEndX - touchStartX;
         const diffY = Math.abs(touchEndY - touchStartY);
+        const startsAtEdge = touchStartX <= 24;
+        touchStartX = null;
+        touchStartY = null;
 
-        // 右にスワイプ（X軸の移動が大きく、Y軸の移動が小さい）
-        if (diffX > 50 && diffY < 50) {
+        // Leave edge swipes to the browser so they do not navigate back twice.
+        if (!startsAtEdge && diffX > 50 && diffY < 50 && history.length > 1) {
             history.back();
         }
     }, false);
+
+    document.addEventListener('touchcancel', () => {
+        touchStartX = null;
+        touchStartY = null;
+    });
 });

@@ -5,6 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>About Me | Portfolio</title>
+    <script>
+        (() => {
+            const navigation = performance.getEntriesByType('navigation')[0];
+            if (navigation && navigation.type === 'back_forward') {
+                history.scrollRestoration = 'auto';
+                return;
+            }
+            if (!navigation || navigation.type !== 'reload') return;
+
+            // Disable position restoration before the browser lays out this page.
+            const previousRestoration = history.scrollRestoration;
+            history.scrollRestoration = 'manual';
+            window.addEventListener('pagehide', () => {
+                history.scrollRestoration = previousRestoration;
+            }, { once: true });
+            if (window.location.hash) {
+                history.replaceState(history.state, '', window.location.pathname + window.location.search);
+            }
+            window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
+        })();
+    </script>
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,6 +44,11 @@
 
     <header id="navbar">
         <div class="logo">My Portfolio</div>
+        <nav class="site-nav" aria-label="ページ内メニュー">
+            <a href="#profile">Profile</a>
+            <a href="#achievements">Achievements</a>
+            <a href="#interests">Interests</a>
+        </nav>
     </header>
 
     <div class="hero-fixed">
@@ -46,12 +72,80 @@
     </div>
 
     <main class="content-layer">
+        <section class="portfolio-section profile" id="profile" aria-labelledby="profile-title">
+            <div class="portfolio-container profile-layout">
+                <div>
+                    <h2 class="section-title reveal-text" id="profile-title">Profile</h2>
+                    <p class="section-caption">プロフィール</p>
+                </div>
+                <div class="profile-details">
+                    <dl class="profile-education">
+                        <div class="education-entry">
+                            <dt>Current</dt>
+                            <dd>
+                                <span class="education-school">大島商船高専</span>
+                                <span class="education-detail">情報工学科 / 5年</span>
+                            </dd>
+                        </div>
+                        <div class="education-entry">
+                            <dt>Next</dt>
+                            <dd>
+                                <span class="education-school">京都工芸繊維大学</span>
+                                <span class="education-detail">情報工学課程</span>
+                            </dd>
+                        </div>
+                    </dl>
+                </div>
+            </div>
+        </section>
 
+        <section class="portfolio-section activities" id="achievements" aria-labelledby="activities-title">
+            <div class="portfolio-container">
+                <h2 class="section-title reveal-text" id="activities-title">Achievements</h2>
+                <p class="section-caption">主な実績</p>
+                <!-- Add an activity by copying one activity-item and updating its content. -->
+                <ul class="activity-list">
+                    <li class="activity-item">
+                        <a class="activity-link activity-link--summary" href="achievements.html#academics">
+                            <div class="activity-copy">
+                                <h3>学業成績1位（3・4年次）</h3>
+                            </div>
+                            <span class="activity-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                    <li class="activity-item">
+                        <a class="activity-link activity-link--summary" href="achievements.html#school-track">
+                            <div class="activity-copy">
+                                <h3>県大会1500m優勝・中国大会7位</h3>
+                            </div>
+                            <span class="activity-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                    <li class="activity-item">
+                        <a class="activity-link activity-link--summary" href="achievements.html#college-track">
+                            <div class="activity-copy">
+                                <h3>全国高専大会出場権獲得（2年連続）</h3>
+                            </div>
+                            <span class="activity-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                    <li class="activity-item">
+                        <a class="activity-link activity-link--summary" href="achievements.html#technology">
+                            <div class="activity-copy">
+                                <h3>実践教育プログラムAI 技術賞</h3>
+                            </div>
+                            <span class="activity-arrow" aria-hidden="true">→</span>
+                        </a>
+                    </li>
+                </ul>
+                <a class="records-more" href="achievements.html">実績一覧 <span aria-hidden="true">→</span></a>
+            </div>
+        </section>
 
-
-        <section class="interests">
+        <section class="interests" id="interests" aria-labelledby="interests-title">
             <div class="container">
-                <h2 class="section-title reveal-text">Interests</h2>
+                <h2 class="section-title reveal-text" id="interests-title">Interests</h2>
+                <p class="section-caption">趣味</p>
 
                 <div class="grid-wrapper">
                     <a class="card large spotlight-card" href="rikujou.html">
