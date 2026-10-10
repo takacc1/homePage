@@ -432,6 +432,14 @@ a {
     border-bottom: 1px solid #292929;
 }
 
+.content-layer .activity-list {
+    border-top: 0;
+}
+
+.content-layer .activity-item:first-child {
+    border-top: 1px solid #292929;
+}
+
 .activity-link {
     display: grid;
     grid-template-columns: 128px minmax(0, 1fr) 24px;
@@ -846,6 +854,24 @@ a {
 .reveal-text.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+.reveal-text.reveal-reset {
+    transition: none;
+}
+
+.content-layer .card h3,
+.content-layer .card p {
+    opacity: 1;
+    transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .reveal-text {
+        opacity: 1;
+        transform: none;
+        transition: none;
+    }
 }
 
 @keyframes slideUp {

@@ -149,17 +149,62 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     // 5. Scroll Reveal
-    const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('visible');
+    const revealElements = document.querySelectorAll([
+        '.reveal-text',
+        '.spotlight-card',
+        '.content-layer .section-caption',
+        '.content-layer .profile-education',
+        '.content-layer .activity-item',
+        '.content-layer .records-more',
+        '.content-layer footer'
+    ].join(', '));
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const observer = !reducedMotion && 'IntersectionObserver' in window
+        ? new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15 })
+        : null;
+
+    revealElements.forEach(el => {
+        el.classList.add('reveal-text');
+        if (observer) observer.observe(el);
+        else el.classList.add('visible');
+    });
+
+    let revealFrame = null;
+    const replayReveals = () => {
+        if (!hero || !observer) return;
+        cancelAnimationFrame(revealFrame);
+        observer.disconnect();
+        revealElements.forEach(el => {
+            el.classList.add('reveal-reset');
+            el.classList.remove('visible');
+        });
+        // Paint the starting state before restarting transitions after history restoration.
+        revealFrame = requestAnimationFrame(() => {
+            revealFrame = requestAnimationFrame(() => {
+                revealFrame = null;
+                revealElements.forEach(el => {
+                    el.classList.remove('reveal-reset');
+                    observer.observe(el);
+                });
+            });
+        });
+    };
+
+    // Keep keyboard navigation from focusing links whose text is still hidden.
+    document.addEventListener('focusin', event => {
+        revealElements.forEach(el => {
+            if (el.contains(event.target) || event.target.contains(el)) {
+                el.classList.add('visible');
+                if (observer) observer.unobserve(el);
             }
         });
-    }, { threshold: 0.15 });
-
-    document.querySelectorAll('.reveal-text, .spotlight-card').forEach(el => {
-        el.classList.add('reveal-text');
-        observer.observe(el);
     });
 
     // 4. Back Navigation Support
@@ -174,6 +219,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (event.persisted || isHistoryNavigation) {
             unlockIntro();
             hideLoader();
+            replayReveals();
             return;
         } else if (root.classList.contains('hero-intro-pending')) {
             window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
